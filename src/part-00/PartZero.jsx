@@ -1,5 +1,5 @@
-import React from 'react';
-import { createStore } from 'redux';
+import React from "react";
+import { createStore } from "redux";
 
 /*
   В этом примере, показана основаня суть Redux.
@@ -21,16 +21,14 @@ import { createStore } from 'redux';
   Dispatch - инициация выполнения Action
 */
 const reducer = (state = 0, action) => {
+  console.log("reducer -> action", state, action);
 
-  console.log('reducer -> action', state, action);
-
-  if (action.type === 'TICK') {
+  if (action.type === "TICK") {
     state++; // +1 при каждом диспатче экшена 'TICK'
     return state;
   }
 
   return state;
-
 };
 
 // Создаем Store, передав ему как минимум Редьюсер
@@ -38,30 +36,30 @@ const store = createStore(reducer); // У createStore есть и другие �
 
 // Диспатчим экшен с именем TICK
 // В результате видно, как увеличивается значение State
-// При диспатсче вызывается reducer(state, { type: 'TICK' }) 
-store.dispatch({ type: 'TICK' });
+// При диспатсче вызывается reducer(state, { type: 'TICK' })
+store.dispatch({ type: "TICK" });
 store.getState(); // Вернет 1
 
-store.dispatch({ type: 'TICK' });
+store.dispatch({ type: "TICK" });
 store.getState(); // Вернет 2
 
-store.dispatch({ type: 'TICK' });
-store.dispatch({ type: 'TICK' });
+store.dispatch({ type: "TICK" });
+store.dispatch({ type: "TICK" });
 // Сколько вернет store.getState() ?
-// console.log('Ответ', store.getState()) // Проверь свой ответ
+console.log("Ответ", store.getState()); // Проверь свой ответ
 
-// Метод subscribe 
+// Метод subscribe
 // Позовляет слушать событие, которое возникает при диспатче экшена
 // А точнее после того, как выполнится редьюсер, после диспатча экшена
 // В subscribe аргументом прокидываем callbaсk функцию
 const callback = () => {
-  console.log('exampleListener', store.getState());
+  console.log("exampleListener", store.getState());
 };
 
 store.subscribe(callback);
 
-store.dispatch({ type: 'TICK' });
-store.dispatch({ type: 'TICK' });
+store.dispatch({ type: "TICK" });
+store.dispatch({ type: "TICK" });
 
 // В консоли выведется
 // > 'exampleListener' 3
@@ -69,32 +67,69 @@ store.dispatch({ type: 'TICK' });
 
 // В редьюсере нет условия для 'POCK'
 // Поэтому State не изменится, но слушатель события будет вызван
-store.dispatch({ type: 'POCK' });
+store.dispatch({ type: "POCK" });
 
 // Можно сколько угодно вешать слушателей события на Store
 
 // Есть возможность отписаться от события
 // Вызов subscribe возврашает код для этого
-const unsubsribe = store.subscribe(() => { console.log('Привет!'); });
+const unsubsribe = store.subscribe(() => {
+  console.log("Привет!");
+});
 
-store.dispatch({ type: 'POCK' });
-store.dispatch({ type: 'POCK' });
+store.dispatch({ type: "POCK" });
+store.dispatch({ type: "POCK" });
 // > 'Привет!'
 // > 'Привет!'
 
 unsubsribe(); // Вызов выполняет отписку () => { console.log('Привет!'); }
 
-store.dispatch({ type: 'POCK' });
+store.dispatch({ type: "POCK" });
 // Теперь коносль "не приветсвует"
 
 // Домашнее задание выполняй тут
-// console.clear();
+console.clear();
 
-// ...
+const reducerr = (state = 0, action) => {
+  console.log("reducerr -> actionn", state, action);
+
+  if (action.type === "BANG") {
+    state = state + 2; // +2 при каждом диспатче экшена 'BANG'
+    return state;
+  }
+
+  if (action.type === "CLEAR") {
+    state = 0; // 0 при каждом диспатче экшена 'CLEAR'
+    return state;
+  }
+
+  return state;
+};
+
+const store_new = createStore(reducerr);
+
+/* store_new.subscribe(() => {
+  console.log("next state", store_new.getState());
+});
+
+ const close = store_new.subscribe(() => {
+  console.log("Привет!");
+}); */  //Использовала для изучения метода subscribe
+
+store_new.dispatch({ type: "BANG" });
+store_new.dispatch({ type: "BANG" });
+store_new.dispatch({ type: "BANG" });
+//close();
+store_new.dispatch({ type: "BANG" });
+store_new.getState(); // 8
+store_new.dispatch({ type: "CLEAR" });
+store_new.dispatch({ type: "BANG" });
+store_new.getState(); // 0
+
 
 /*
   <PartZero /> просто сообщение в браузере.
   В следующих примерах будет показано взаимодействие компонентов React и Redux.
 */
-const PartZero = () => <div className="PartZero">Открой консоль в брузере! Пусть всегда она будет на виду.</div>
+const PartZero = () => <div className="PartZero">Открой консоль в брузере! Пусть всегда она будет на виду.</div>;
 export default PartZero;
