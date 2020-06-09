@@ -20,6 +20,22 @@
 
             // Здесь доступна глобальная переменная Redux
             // C ее методами, например Redux.createStore
+
+            
+            const GENERATE_RANDOM = "GENERATE_RANDOM";
+
+            const initState = 0.42;
+
+            const reducer = (state = initState, action) => {    
+
+            if (action.type === GENERATE_RANDOM) {
+                return Math.random();
+            }
+
+            return state;
+            };
+
+            const store = Redux.createStore(reducer);
             
             class PartOne {
 
@@ -29,11 +45,14 @@
                 }
 
                 generateRandom = () => {
-                    alert(42);
+                    const action = { type: GENERATE_RANDOM };
+                    store.dispatch(action);
+
+                    this.forceUpdate();
                 }
 
                 render() {
-                    const data = { state: 0.42 };
+                    const data = store.getState();
 
                     const render_template = this.template(data);
                     document.getElementById('PartOne').innerHTML = render_template;

@@ -1,5 +1,5 @@
-import React from 'react';
-import { createStore } from 'redux';
+import React from "react";
+import { createStore } from "redux";
 /*
   Это пример простой способ отобразить данные из State в компоненте.
 */
@@ -18,15 +18,14 @@ import { createStore } from 'redux';
 // dispatch({ type: TYPE_TIKC })
 // Uncaught ReferenceError: TYPE_TIKC is not defined
 
-const GENERATE_RANDOM = 'GENERATE_RANDOM';
+const GENERATE_RANDOM = "GENERATE_RANDOM";
 
 // State может хранить любое возможное значение JavaSctipt, например: NaN, undefined, null, String, WeakMap и т.д.
 // Выше перечисленные типы редко ипользуются, в отличии от списков (array), хеш-таблиц и деревьев.
 // С которыми в дальнейшем будут представлены примеры.
-const initState = 0.42; // Number
+const initState = 0.1; // Number
 
 const reducer = (state = initState, action) => {
-
   // Нажимайте "GENERATE RANDOM" и смотрите Console
   console.log(state, action);
 
@@ -49,10 +48,9 @@ const reducer = (state = initState, action) => {
   // Поэтому перехватить этот экшен обычным способом мы не можем if (action.type === '@@redux/INIT') { ... }
   // Это сделано, чтобы не было коллизии с именами пользователя
   // Конечно можно перехватить этот экшен используя (action.type).indexOf('@@redux/INIT) !== -1
-  // но судя по сгенерированному имени экшена (@@redux/INITb.f.p.q....) авторы Redux, явно на это указали, что делать так не стоит, 
-
+  // но судя по сгенерированному имени экшена (@@redux/INITb.f.p.q....) авторы Redux, явно на это указали, что делать так не стоит,
 };
- 
+
 /** */
 const store = createStore(reducer);
 
@@ -61,7 +59,6 @@ const store = createStore(reducer);
   но в дальнейших примерах будет показан и Functional Component.
 */
 class PartOne extends React.Component {
-
   // При нажатии кнопки "GENERATE RANDOM" диспатчим экшн { type: GENERATE_RANDOM }
   // Редьюсер зайдет в соответствующее условие на строке #33
   // в итоге значением State станет новое случайно число из Math.random()
@@ -79,11 +76,18 @@ class PartOne extends React.Component {
 
     // Но это грязный хак для примера, в дальннейших уроках узнаем
     // приемлемый подход для такой проблемы
+  };
 
+  //Задача 01.01
+  componentDidMount() {
+    store.subscribe(() => {
+      this.forceUpdate(() => {
+        console.log("subscribe");
+      });
+    });
   }
 
   render() {
-
     // Тут каждый раз при render() достаем акутальный на момент вызова State
     const state = store.getState();
 
@@ -94,7 +98,6 @@ class PartOne extends React.Component {
       </div>
     );
   }
-
 }
 
 export default PartOne;
